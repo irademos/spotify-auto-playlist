@@ -5,7 +5,9 @@ const App = () => {
     const [authToken, setAuthToken] = useState("");
     const [userId, setUserId] = useState("");
     const [playlistName, setPlaylistName] = useState("");
-    const [trackUris, setTrackUris] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const [selectedPlaylists, setSelectedPlaylists] = useState([]);
+    const [frequency, setFrequency] = useState("");
 
     const login = () => {
         window.location.href = "http://localhost:5000/login";
@@ -22,17 +24,40 @@ const App = () => {
         setUserId(userResponse.data.id);
     };
 
-    const createPlaylist = async () => {
-        const response = await axios.post("http://localhost:5000/create-playlist", {
-            token: authToken,
-            userId: userId,
-            playlistName: playlistName,
-            trackUris: trackUris.split(","),
-        });
-
-        if (response.data.success) {
-            alert("Playlist created!");
+    const searchPlaylists = async (query) => {
+        if (!query) {
+            setSearchResults([]);
+            return;
         }
+    
+        try {
+            const response = await axios.post("http://localhost:5000/search-playlists", {
+                token: authToken,
+                query: query,
+            });
+    
+            console.log("Search Results:", response.data); // Debugging line
+            setSearchResults(response.data);
+        } catch (error) {
+            console.error("Error searching playlists:", error);
+            setSearchResults([]);
+        }
+    };
+    
+
+    const addPlaylist = (playlist) => {
+        setSelectedPlaylists((prev) => [...prev, playlist]);
+        setSearchResults([]);
+        setPlaylistName(""); // Clear the input box
+    };
+
+    const createPlaylist = async () => {
+        if (!frequency || selectedPlaylists.length === 0) {
+            alert("Please select frequency and playlists.");
+            return;
+        }
+
+        // Your logic to fetch tracks and create the playlist based on the selected playlists and frequency
     };
 
     React.useEffect(() => {
@@ -49,18 +74,69 @@ const App = () => {
                 <button onClick={login}>Login with Spotify</button>
             ) : (
                 <div>
-                    <input
-                        type="text"
-                        placeholder="Playlist Name"
-                        value={playlistName}
-                        onChange={(e) => setPlaylistName(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Track URIs (comma-separated)"
-                        value={trackUris}
-                        onChange={(e) => setTrackUris(e.target.value)}
-                    />
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Search Playlists"
+                            value={playlistName}
+                            onChange={(e) => {
+                                setPlaylistName(e.target.value);
+                                searchPlaylists(e.target.value);
+                            }}
+                        />
+                        <ul>
+                            {searchResults.length === 0 && <p>No playlists found.</p>}
+                            {searchResults.map((playlist) => (
+                                playlist && playlist.name ? (
+                                    <li
+                                        key={playlist.id}
+                                        onClick={() => addPlaylist(playlist)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        {playlist.name}
+                                    </li>
+                                ) : null
+                            ))}
+                        </ul>
+
+                    </div>
+
+                    <h3>Selected Playlists:</h3>
+                    <ul>
+                        {selectedPlaylists.map((playlist) => (
+                            <li key={playlist.id}>{playlist.name}</li>
+                        ))}
+                    </ul>
+
+                    <h3>Frequency:</h3>
+                    <label>
+                        <input
+                            type="radio"
+                            value="daily"
+                            checked={frequency === "daily"}
+                            onChange={() => setFrequency("daily")}
+                        />
+                        Daily
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="weekly"
+                            checked={frequency === "weekly"}
+                            onChange={() => setFrequency("weekly")}
+                        />
+                        Weekly
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="monthly"
+                            checked={frequency === "monthly"}
+                            onChange={() => setFrequency("monthly")}
+                        />
+                        Monthly
+                    </label>
+
                     <button onClick={createPlaylist}>Create Playlist</button>
                 </div>
             )}
