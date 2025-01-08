@@ -13,7 +13,9 @@ const PORT = process.env.PORT || 5000;
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/callback";
+const REDIRECT_URI = process.env.NODE_ENV === "production"
+    ? "https://spotify-auto-playlist.vercel.app/callback"
+    : "http://localhost:3000/callback";
 
 app.get("/login", (req, res) => {
     const scopes = "playlist-modify-public playlist-modify-private";

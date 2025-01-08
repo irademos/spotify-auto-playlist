@@ -8,21 +8,49 @@ const App = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedPlaylists, setSelectedPlaylists] = useState([]);
     const [frequency, setFrequency] = useState("");
+    const [newPlaylistName, setNewPlaylistName] = useState(""); // State for new playlist name
 
     const login = () => {
-        window.location.href = "http://localhost:5000/login";
+        window.location.href = process.env.NODE_ENV === "production"
+        ? "https://spotify-auto-playlist.vercel.app/login"
+        : "http://localhost:5000/login";
     };
+
+    // const getToken = async (code) => {
+    //     const response = await axios.post(process.env.NODE_ENV === "production"
+    //         ? "https://spotify-auto-playlist.vercel.app/token"
+    //         : "http://localhost:5000/token", { code });
+    //     setAuthToken(response.data.access_token);
+
+    //     const userResponse = await axios.get("https://api.spotify.com/v1/me", {
+    //         headers: { Authorization: `Bearer ${response.data.access_token}` },
+    //     });
+
+    //     setUserId(userResponse.data.id);
+    // };
+
 
     const getToken = async (code) => {
-        const response = await axios.post("http://localhost:5000/token", { code });
-        setAuthToken(response.data.access_token);
-
-        const userResponse = await axios.get("https://api.spotify.com/v1/me", {
-            headers: { Authorization: `Bearer ${response.data.access_token}` },
-        });
-
-        setUserId(userResponse.data.id);
+        console.log("Attempting to fetch token with code:", code); // Debugging
+        try {
+            const response = await axios.post(process.env.NODE_ENV === "production"
+                ? "https://spotify-auto-playlist.vercel.app/token"
+                : "http://localhost:5000/token", { code });
+    
+            console.log("Token response:", response.data); // Debugging
+            setAuthToken(response.data.access_token);
+    
+            const userResponse = await axios.get("https://api.spotify.com/v1/me", {
+                headers: { Authorization: `Bearer ${response.data.access_token}` },
+            });
+    
+            console.log("User response:", userResponse.data); // Debugging
+            setUserId(userResponse.data.id);
+        } catch (error) {
+            console.error("Error fetching token or user details:", error);
+        }
     };
+    
 
     const searchPlaylists = async (query) => {
         if (!query) {
@@ -31,7 +59,9 @@ const App = () => {
         }
     
         try {
-            const response = await axios.post("http://localhost:5000/search-playlists", {
+            const response = await axios.post(process.env.NODE_ENV === "production"
+                ? "https://spotify-auto-playlist.vercel.app/search-playlists"
+                : "http://localhost:5000/search-playlists", {
                 token: authToken,
                 query: query,
             });
@@ -57,7 +87,25 @@ const App = () => {
             return;
         }
 
-        // Your logic to fetch tracks and create the playlist based on the selected playlists and frequency
+        try {
+            const response = await axios.post(process.env.NODE_ENV === "production"
+                ? "https://spotify-auto-playlist.vercel.app/create-playlist"
+                : "http://localhost:5000/create-playlist", {
+                token: authToken,
+                playlists: selectedPlaylists,
+                timeframe: frequency,
+                newPlaylistName: newPlaylistName, // Send new playlist name to the backend
+            });
+
+            if (response.data.success) {
+                alert("Playlist created successfully!");
+            } else {
+                alert("Failed to create playlist.");
+            }
+        } catch (error) {
+            console.error("Error creating playlist:", error);
+            alert("Error creating playlist.");
+        }
     };
 
     React.useEffect(() => {
@@ -136,6 +184,14 @@ const App = () => {
                         />
                         Monthly
                     </label>
+
+                    <h3>New Playlist Name:</h3>
+                    <input
+                        type="text"
+                        placeholder="Enter new playlist name"
+                        value={newPlaylistName}
+                        onChange={(e) => setNewPlaylistName(e.target.value)}
+                    />
 
                     <button onClick={createPlaylist}>Create Playlist</button>
                 </div>
