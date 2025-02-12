@@ -11,7 +11,7 @@ const App = () => {
     const [newPlaylistName, setNewPlaylistName] = useState(""); // State for new playlist name
 
     const login = () => {
-        window.location.href = process.env.NODE_ENV === "production"
+        window.location.href = process.env.VERCEL_ENV === "production"
         ? "https://spotify-auto-playlist.vercel.app/login"
         : "http://localhost:5000/login";
     };
