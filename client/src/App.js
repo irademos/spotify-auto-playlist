@@ -122,6 +122,7 @@ const App = () => {
                 <button onClick={login}>Login with Spotify</button>
             ) : (
                 <div>
+                    {userId && <p>Logged in as: {userId}</p>}
                     <div>
                         <input
                             type="text"
