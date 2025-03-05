@@ -3,7 +3,11 @@
     "builds": [
     {
       "src": "server/index.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "distDir": "client/build",
+        "outputDirectory": "client/build"
+      }
     },
     {
       "src": "client/package.json",
@@ -20,7 +24,6 @@
         "dest": "client/build/$1"
       }
     ],
-    "buildCommand": "cd client && npm run build",
-    "outputDirectory": "./client/build"
+    "buildCommand": "cd client && npm run build"
   }
   
