@@ -35,7 +35,7 @@ const App = () => {
     const getToken = async (code) => {
         console.log("Attempting to fetch token with code:", code); // Debugging
         try {
-            const response = await axios.post(process.env.CUSTOM_VERCEL === "production"
+            const response = await axios.post(process.env.REACT_APP_VERCEL_ENV === "production"
                 ? "https://spotify-auto-playlist.vercel.app/token"
                 : "http://localhost:5000/token", { code });
     
@@ -61,7 +61,7 @@ const App = () => {
         }
     
         try {
-            const response = await axios.post(process.env.CUSTOM_VERCEL === "production"
+            const response = await axios.post(process.env.REACT_APP_VERCEL_ENV === "production"
                 ? "https://spotify-auto-playlist.vercel.app/search-playlists"
                 : "http://localhost:5000/search-playlists", {
                 token: authToken,
@@ -90,7 +90,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.post(process.env.CUSTOM_VERCEL === "production"
+            const response = await axios.post(process.env.REACT_APP_VERCEL_ENV === "production"
                 ? "https://spotify-auto-playlist.vercel.app/create-playlist"
                 : "http://localhost:5000/create-playlist", {
                 token: authToken,

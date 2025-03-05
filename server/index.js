@@ -11,9 +11,9 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.CUSTOM_VERCEL === "production"
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
+const REDIRECT_URI = process.env.REACT_APP_VERCEL_ENV === "production"
     ? "https://spotify-auto-playlist.vercel.app/callback"
     : "http://localhost:3000/callback";
 
