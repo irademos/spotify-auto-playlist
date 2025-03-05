@@ -21,10 +21,8 @@
       {
         "src": "/(.*)",
         "dest": "client/build/$1"
-      },
-      {
-        "buildCommand": "cd client && npm run build"
       }
-    ]
+    ],
+    "buildCommand": "cd client && npm run build"
   }
   
