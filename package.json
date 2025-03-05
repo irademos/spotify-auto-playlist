@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "cd client/src && npm start",
-    "build": "react-scripts build --output public"
+    "build": "react-scripts build --output client/build"
   },
 
   "devDependencies": {
