@@ -1,4 +1,4 @@
-{
+  {
     "version": 2,
     "builds": [
       {
@@ -9,7 +9,7 @@
         "src": "client/package.json",
         "use": "@vercel/static-build",
         "config": {
-          "distDir": "client/public"
+          "distDir": "client/build"
         }
       }
     ],
@@ -20,8 +20,9 @@
       },
       {
         "src": "/(.*)",
-        "dest": "client/public/$1"
+        "dest": "client/build/$1"
       }
-    ]
+    ],
+    "buildCommand": "cd client && npm run build"
   }
   
