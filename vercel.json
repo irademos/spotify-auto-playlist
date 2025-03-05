@@ -6,10 +6,10 @@
         "use": "@vercel/node"
       },
       {
-        "src": "client/package.json",
+        "src": "./package.json",
         "use": "@vercel/static-build",
         "config": {
-          "distDir": "./public"
+          "distDir": "./build"
         }
       }
     ],
@@ -20,7 +20,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "client/build/$1"
+        "dest": "./build/$1"
       }
     ],
     "buildCommand": "cd client && npm run build"
