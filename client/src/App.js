@@ -12,6 +12,7 @@ const App = () => {
 
     const login = () => {
         // console.log("REACT_APP_VERCEL_ENV:", process.env.REACT_APP_VERCEL_ENV);  // Add this to debug
+        console.log("REACT_APP_URL:", process.env.REACT_APP_URL);  // Add this to debug
         window.location.href = process.env.REACT_APP_VERCEL_ENV === "production"
         // ? "https://spotify-auto-playlist.vercel.app/login"
         ? process.env.REACT_APP_URL + "/login"
