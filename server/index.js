@@ -9,6 +9,8 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
+const PORT = process.env.REACT_APP_PORT || 5000;
+
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
 const REDIRECT_URI = process.env.REACT_APP_VERCEL_ENV === "production"
@@ -51,6 +53,7 @@ app.post("/token", async (req, res) => {
     }
 });
 
+
 app.post("/search-playlists", async (req, res) => {
     const { token, query } = req.body;
 
@@ -68,6 +71,8 @@ app.post("/search-playlists", async (req, res) => {
     }
 });
 
+
+// Update create-playlist endpoint
 app.post("/create-playlist", async (req, res) => {
     const { token, playlists, timeframe, newPlaylistName } = req.body;
 
@@ -114,5 +119,35 @@ app.post("/create-playlist", async (req, res) => {
     }
 });
 
-// Export the express app to be used by Vercel as a serverless function
-module.exports = app;
+
+// app.post("/create-playlist", async (req, res) => {
+//     const { token, userId, playlistName, trackUris } = req.body;
+
+//     try {
+//         const playlistResponse = await axios.post(
+//             `https://api.spotify.com/v1/users/${userId}/playlists`,
+//             { name: playlistName },
+//             {
+//                 headers: { Authorization: `Bearer ${token}` },
+//             }
+//         );
+
+//         const playlistId = playlistResponse.data.id;
+
+//         await axios.post(
+//             `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+//             { uris: trackUris },
+//             {
+//                 headers: { Authorization: `Bearer ${token}` },
+//             }
+//         );
+
+//         res.json({ success: true });
+//     } catch (error) {
+//         res.status(500).json({ error: error.response.data });
+//     }
+// });
+
+app.listen(PORT, () => {
+    console.log(`Server running on :${PORT}`);
+});
