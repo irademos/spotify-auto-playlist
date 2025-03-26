@@ -9,9 +9,7 @@
   "scripts": {
     "start": "cd client/src && npm start"
   },
-
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.18.6"
   }
-
 }

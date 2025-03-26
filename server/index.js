@@ -19,6 +19,7 @@ const REDIRECT_URI = process.env.REACT_APP_VERCEL_ENV === "production"
 
 app.get("/login", (req, res) => {
     const scopes = "playlist-modify-public playlist-modify-private";
+    console.log(process.env.REACT_APP_CLIENT_ID);
     res.redirect(
         `https://accounts.spotify.com/authorize?response_type=code&client_id=${CLIENT_ID}&scope=${encodeURIComponent(
             scopes
