@@ -1,38 +1,26 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "outputDirectory": "client/build"
-      }
-    },
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
+  {
+    "src": "client/package.json",
+    "use": "@vercel/static-build",
+    "config": {
+      "outputDirectory": "."
     }
+  },
+  {
+    "src": "server/index.js",
+    "use": "@vercel/node"
+  }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "server/index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "client/build/$1"
-    },
-    {
-      "src": "/login",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/callback",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/create-playlist",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/search-playlists",
-      "dest": "server/index.js"
     }
   ],
   "buildCommand": "cd client && npm run build"
