@@ -21,6 +21,38 @@
     {
       "src": "/(.*)",
       "dest": "client/build/$1"
+    },
+    {
+      "src": "/login",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/callback",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/create-playlist",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/search-playlists",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/api/login",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/api/callback",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/api/create-playlist",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/api/search-playlists",
+      "dest": "server/index.js"
     }
   ],
   "buildCommand": "cd client && npm run build"
