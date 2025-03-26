@@ -17,7 +17,7 @@ const REDIRECT_URI = process.env.REACT_APP_VERCEL_ENV === "production"
     ? "https://spotify-auto-playlist.vercel.app/callback"
     : "http://localhost:3000/callback";
 
-app.get("/login", (req, res) => {
+app.get("/api/login", (req, res) => {
     const scopes = "playlist-modify-public playlist-modify-private";
     console.log(process.env.REACT_APP_CLIENT_ID);
     res.redirect(
