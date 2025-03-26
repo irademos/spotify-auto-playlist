@@ -13,6 +13,15 @@
     "use": "@vercel/node"
   }
   ],
-  "buildCommand": "cd client && npm run build",
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/build/$1"
+    }
+  ],
+  "buildCommand": "cd client && npm run build"
 }
