@@ -17,7 +17,7 @@ const REDIRECT_URI = process.env.REACT_APP_VERCEL_ENV === "production"
     ? "https://spotify-auto-playlist.vercel.app/callback"
     : "http://localhost:3000/callback";
 
-app.get("/api/login", (req, res) => {
+app.get("/login", (req, res) => {
     const scopes = "playlist-modify-public playlist-modify-private";
     console.log(process.env.REACT_APP_CLIENT_ID);
     res.redirect(
@@ -52,22 +52,6 @@ app.post("/token", async (req, res) => {
         res.status(500).json({ error: error.response.data });
     }
 });
-
-
-// // Add a new endpoint for searching playlists
-// app.get("/search-playlists", async (req, res) => {
-//     const query = req.query.q;
-//     const token = req.headers.authorization.split(" ")[1];
-
-//     try {
-//         const response = await axios.get(`https://api.spotify.com/v1/me/playlists?limit=10&q=${query}`, {
-//             headers: { Authorization: `Bearer ${token}` },
-//         });
-//         res.json(response.data);
-//     } catch (error) {
-//         res.status(500).json({ error: error.response.data });
-//     }
-// });
 
 
 app.post("/search-playlists", async (req, res) => {
